@@ -1,0 +1,65 @@
+# Dependencies and compiled output
+node_modules/
+dist/
+artifacts/
+coverage/
+playwright-report/
+test-results/
+apps/windows/**/bin/
+apps/windows/**/obj/
+apps/macos/.build/
+apps/macos/build/
+
+# Local application data and private candidate material
+.agents/
+.cache/
+.codex/
+.codex-tmp/
+.logs/
+applications/
+assessment-practice/
+config/
+cvs/
+dashboard/
+data/
+docs/
+*_jobs_20*/
+outputs/
+tmp/
+Upwork_CVs/
+
+# Historical private automation source retained only in this workspace
+src/application-adapters*
+src/application.ts
+src/candidate-routing.test.ts
+src/cli/
+src/cover-letter-generator*
+src/cv-generator*
+src/cv-library.ts
+src/dashboard-data.ts
+src/manual-assist*
+src/manual-completion*
+src/scoring.ts
+src/shortlists.ts
+
+# Personal documents, generated documents, and runtime traces
+*.pdf
+*.docx
+*.tex
+*.aux
+*.log
+*.out
+*.stderr
+*.stdout
+*.stderr.log
+*.stdout.log
+job_shortlist_*.md
+tmp-*
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.user
+*.suo

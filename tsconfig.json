@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2023", "DOM"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"],
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": [
+    "src/config.ts",
+    "src/csv.ts",
+    "src/discovery.ts",
+    "src/discovery.test.ts",
+    "src/job-fields.ts",
+    "src/job-quality.ts",
+    "src/platforms.ts",
+    "src/platforms.test.ts",
+    "src/search.ts",
+    "src/types.ts",
+    "src/utils.ts",
+    "src/desktop/**/*.ts"
+  ]
+}

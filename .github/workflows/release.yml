@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Windows installer
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          ./apps/windows/build-installer.ps1 -Version $version
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-windows
+          path: artifacts/MyJobFinder-Setup.exe
+          if-no-files-found: error
+
+  macos:
+    name: macOS ${{ matrix.suffix }} DMG
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            suffix: arm64
+          - runner: macos-15-intel
+            suffix: x64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run desktop:build-worker
+      - name: Build app bundle
+        run: APP_VERSION="${GITHUB_REF_NAME#v}" zsh apps/macos/build-app.sh
+      - name: Build DMG
+        run: ARCH_SUFFIX="${{ matrix.suffix }}" OUTPUT_NAME="MyJobFinder-macOS-${{ matrix.suffix }}.dmg" zsh apps/macos/build-dmg.sh
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-macos-${{ matrix.suffix }}
+          path: artifacts/MyJobFinder-macOS-${{ matrix.suffix }}.dmg
+          if-no-files-found: error
+
+  publish:
+    name: Publish GitHub Release
+    needs: [windows, macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: release-*
+          path: artifacts
+          merge-multiple: true
+      - name: Create checksums
+        run: |
+          cd artifacts
+          sha256sum MyJobFinder-Setup.exe MyJobFinder-macOS-arm64.dmg MyJobFinder-macOS-x64.dmg > SHA256SUMS.txt
+      - uses: softprops/action-gh-release@v3
+        with:
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            artifacts/MyJobFinder-Setup.exe
+            artifacts/MyJobFinder-macOS-arm64.dmg
+            artifacts/MyJobFinder-macOS-x64.dmg
+            artifacts/SHA256SUMS.txt

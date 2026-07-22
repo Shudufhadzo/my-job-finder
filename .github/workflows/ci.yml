@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  engine:
+    name: Engine checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+
+  windows:
+    name: Windows build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - run: npm ci
+      - run: npm run desktop:windows:build
+      - run: dotnet run --project apps/windows/MyJobFinder.Core.Tests/MyJobFinder.Core.Tests.csproj -c Release
+
+  macos:
+    name: macOS tests
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+      - run: swift test
+        working-directory: apps/macos
