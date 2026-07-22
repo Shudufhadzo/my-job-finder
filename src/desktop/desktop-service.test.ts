@@ -59,12 +59,13 @@ test("stale grouped rejections are repaired to their individual job page locally
 });
 
 test("desktop state contains only the active desktop user's jobs and absolute document links", () => {
+  const documentsRoot = path.resolve(os.tmpdir(), "my-job-finder-jane");
   const profile = {
     version: 1 as const,
     id: "desktop-user" as const,
     displayName: "Jane Doe",
-    masterCvPath: "C:\\Users\\Jane\\master-cv.pdf",
-    masterCvMarkdownPath: "C:\\Users\\Jane\\master-cv.md",
+    masterCvPath: path.join(documentsRoot, "master-cv.pdf"),
+    masterCvMarkdownPath: path.join(documentsRoot, "master-cv.md"),
     targetRoles: ["Data Analyst"],
     locations: ["Remote"],
     scheduleTime: "10:00",
@@ -82,8 +83,8 @@ test("desktop state contains only the active desktop user's jobs and absolute do
     location: "Remote",
     score: 80,
     status: "ready_to_apply",
-    selectedCvPdf: "C:\\Users\\Jane\\acme-cv.pdf",
-    selectedCoverLetterPdf: "C:\\Users\\Jane\\acme-letter.pdf"
+    selectedCvPdf: path.join(documentsRoot, "acme-cv.pdf"),
+    selectedCoverLetterPdf: path.join(documentsRoot, "acme-letter.pdf")
   } as PersistedJob;
 
   const state = buildDesktopState(profile, [baseJob, { ...baseJob, id: "old", candidateProfile: "other-user" }], new Date("2026-07-21T07:00:00.000Z"), 120);

@@ -28,6 +28,7 @@ final class WorkspaceLocatorTests: XCTestCase {
         try FileManager.default.createDirectory(at: worker.deletingLastPathComponent(), withIntermediateDirectories: true)
         try Data().write(to: worker)
         defer { try? FileManager.default.removeItem(at: root) }
-        XCTAssertEqual(try WorkspaceLocator.find(startingAt: nested), root)
+        let located = try WorkspaceLocator.find(startingAt: nested)
+        XCTAssertEqual(located.standardizedFileURL.path, root.standardizedFileURL.path)
     }
 }

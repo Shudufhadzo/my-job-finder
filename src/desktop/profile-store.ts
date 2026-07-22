@@ -111,9 +111,7 @@ export function saveDesktopProfile(
   const sourceCvPath = path.resolve(input.sourceCvPath);
   const codexOptions = readCodexModelOptions();
   const requestedModel = input.aiModel?.trim();
-  const aiModel = requestedModel && codexOptions.models.includes(requestedModel)
-    ? requestedModel
-    : codexOptions.defaultModel;
+  const aiModel = requestedModel || codexOptions.defaultModel;
   const reasoningEffort = input.reasoningEffort && isReasoningEffort(input.reasoningEffort)
     ? input.reasoningEffort
     : codexOptions.defaultReasoningEffort;
@@ -178,9 +176,7 @@ export function loadDesktopProfile(dataRoot = getDesktopDataRoot()): DesktopProf
     version: 1,
     id: stored.id?.trim() || candidateIdForName(stored.displayName),
     masterCvMarkdownPath: stored.masterCvMarkdownPath?.trim() || path.join(dataRoot, "documents", "master-cv.md"),
-    aiModel: stored.aiModel?.trim() && defaults.models.includes(stored.aiModel.trim())
-      ? stored.aiModel.trim()
-      : defaults.defaultModel,
+    aiModel: stored.aiModel?.trim() || defaults.defaultModel,
     reasoningEffort: stored.reasoningEffort && isReasoningEffort(stored.reasoningEffort)
       ? stored.reasoningEffort
       : defaults.defaultReasoningEffort

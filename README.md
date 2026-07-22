@@ -16,7 +16,7 @@ My Job Finder is a local-first desktop application that turns one master CV into
 
 Release checksums are published as `SHA256SUMS.txt` beside the installers.
 
-> **Unsigned preview:** Version 0.1.0 is an open-source preview and is not yet backed by commercial Windows code-signing or Apple notarisation certificates. Windows SmartScreen may show an unknown-publisher warning. On macOS, open the app with **Control-click > Open** the first time.
+> **Unsigned preview:** Version 0.1.1 is an open-source preview and is not yet backed by commercial Windows code-signing or Apple notarisation certificates. Windows SmartScreen may show an unknown-publisher warning. On macOS, open the app with **Control-click > Open** the first time.
 
 ## What it does
 
