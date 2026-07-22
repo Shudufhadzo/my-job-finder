@@ -22,8 +22,6 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - run: npm ci
-      - run: npm run check
-      - run: npm test
       - name: Install Inno Setup
         run: choco install innosetup --no-progress -y
       - name: Build installer

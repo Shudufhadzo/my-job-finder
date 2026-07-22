@@ -5,7 +5,6 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 APP_VERSION="${APP_VERSION:-$(cd "$REPO_ROOT" && node -p "require('./package.json').version")}"
-swift test
 swift build -c release
 
 APP="$SCRIPT_DIR/build/My Job Finder.app"

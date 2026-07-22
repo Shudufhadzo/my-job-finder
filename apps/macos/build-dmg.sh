@@ -18,6 +18,19 @@ rm -rf "$STAGING" "$OUTPUT"
 mkdir -p "$STAGING" "$REPO_ROOT/artifacts"
 cp -R "$APP" "$STAGING/"
 ln -s /Applications "$STAGING/Applications"
-hdiutil create -volname "My Job Finder" -srcfolder "$STAGING" -ov -format UDZO "$OUTPUT"
+sync
+
+for attempt in 1 2 3; do
+  rm -f "$OUTPUT"
+  if hdiutil create -volname "My Job Finder" -srcfolder "$STAGING" -ov -format UDZO "$OUTPUT"; then
+    break
+  fi
+  if [[ "$attempt" -eq 3 ]]; then
+    echo "Unable to create the DMG after $attempt attempts." >&2
+    exit 1
+  fi
+  sleep $((attempt * 5))
+done
+
 rm -rf "$STAGING"
 echo "Built $OUTPUT"
