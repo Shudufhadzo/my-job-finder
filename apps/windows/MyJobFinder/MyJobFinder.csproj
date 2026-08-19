@@ -20,7 +20,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyJobFinder.Core\MyJobFinder.Core.csproj" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260508005" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.4.0" />
   </ItemGroup>
   <Target Name="CopyWinUiResourcesToPublishDirectory" AfterTargets="Publish">
     <ItemGroup>
